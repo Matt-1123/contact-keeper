@@ -1,8 +1,12 @@
 // entry point to back end
-const express = require("express"); // this is called Common JS, which is used to bring in modules
+const express = require("express"); // this is called Common JS, which is used to bring in modules. To use import, Babel or something similar would be needed.
+const connectDB = require("./config/db");
 
 // initalize express into variable
 const app = express();
+
+// Connect Database
+connectDB();
 
 // add route
 app.get("/", (req, res) =>
@@ -10,6 +14,7 @@ app.get("/", (req, res) =>
 );
 
 // Define Routes (every backend route will start with '/api')
+// Each app.use(middleware) is called every time a request is sent to the server.
 app.use("/api/users", require("./routes/users"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/contacts", require("./routes/contacts"));

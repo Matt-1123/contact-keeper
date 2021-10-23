@@ -1,0 +1,3 @@
+default.json allows access to global variables, and uses the config dependency
+
+db.js uses mongoose to connect to database
