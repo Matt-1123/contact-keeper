@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const config = require("config");
+const config = require("config"); // import this to access global variable, mongoURI
 const db = config.get("mongoURI"); // gets mongoURI from default.json, which gets this connection string from mongodb to allow us to connect to the database
 
 const connectDB = async () => {
