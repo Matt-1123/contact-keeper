@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs"); // bcrypt is a password-hashing function which incorporates a salt to protect against rainbow table attacks. A salt is random data that is used as an additional input to a one-way function that hashes data, a password or passphrase
 const jwt = require("jsonwebtoken");
 const config = require("config");
-const auth = require("../middleware/auth");
+const auth = require("../middleware/auth"); // protects route with a JWT
 const { check, validationResult } = require("express-validator");
 
 // import User model
@@ -14,6 +14,8 @@ const User = require("../models/User");
 // @access    Private
 router.get("/", auth, async (req, res) => {
   try {
+    // findById: find a single user document by its _id field. Exclude password.
+    // User (capitalized): If the correct token is in the header (meaning the user is logged in), the request object will have a user object (found in the JWT token).
     const user = await User.findById(req.user.id).select("-password");
     res.json(user);
   } catch {
