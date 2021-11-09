@@ -2,6 +2,7 @@ import React, { useReducer } from "react";
 import uuid from "uuid";
 import ContactContext from "./contactContext";
 import contactReducer from "./contactReducer";
+// types represent actions sent to the useReducer hook. A type and a payload are sent together to the reducer.
 import {
   ADD_CONTACT,
   DELETE_CONTACT,
@@ -45,7 +46,15 @@ const ContactState = (props) => {
   const [state, dispatch] = useReducer(contactReducer, initialState);
 
   // ACTIONS:
+
   // Add contact
+  const addContact = (contact) => {
+    // Note: MongoDB adds id
+    // UUID will temporarily provide the id until backend is setup
+    contact.id = uuid.v4();
+    // Dispatch to reducer
+    dispatch({ type: ADD_CONTACT, payload: contact });
+  };
 
   // Delete contact
 
@@ -63,6 +72,7 @@ const ContactState = (props) => {
     <ContactContext.Provider
       value={{
         contacts: state.contacts,
+        addContact,
       }}
     >
       {props.children}
