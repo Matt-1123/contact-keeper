@@ -38,11 +38,12 @@ const ContactState = (props) => {
         type: "professional",
       },
     ],
+    current: null,
   };
 
   // Pull out state and dispatch from reducer using the useReducer hook
   // state: allows us to access anything in our state. We get this from useReducer.
-  // dispatch: allows us to dispatch objects to the reducer
+  // dispatch: allows us to dispatch objects to the reducer with two properties: type and payload.
   const [state, dispatch] = useReducer(contactReducer, initialState);
 
   // ACTIONS:
@@ -62,8 +63,15 @@ const ContactState = (props) => {
   };
 
   // Set current contact
+  const setCurrent = (contact) => {
+    dispatch({ type: SET_CURRENT, payload: contact });
+  };
 
   // Clear current contact
+  // No need for a payload because contact is being set back to null
+  const clearCurrent = () => {
+    dispatch({ type: CLEAR_CURRENT });
+  };
 
   // Update contact
 
@@ -75,8 +83,11 @@ const ContactState = (props) => {
     <ContactContext.Provider
       value={{
         contacts: state.contacts,
+        current: state.current,
         addContact,
         deleteContact,
+        setCurrent,
+        clearCurrent,
       }}
     >
       {props.children}
