@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from "react"; // Note: useRef here is used to access the value to a DOM element - the input field.
+import React, { useContext, useRef, useEffect } from "react"; // Note: useRef here is used to access the value to a DOM element - the input field. This is an alternative to using local state with useState.
 import ContactContext from "../../context/contact/contactContext";
 
 const ContactFilter = () => {
@@ -8,6 +8,7 @@ const ContactFilter = () => {
   const { filterContacts, clearFilter, filtered } = contactContext;
 
   // if the filtered part of our state is null, the input's value should be cleared
+  // 'text' is accessed with useRef.
   useEffect(() => {
     if (filtered === null) {
       text.current.value = "";
@@ -16,9 +17,9 @@ const ContactFilter = () => {
 
   const onChange = (e) => {
     if (text.current.value !== "") {
-      contactContext.filterContacts(e.target.value);
+      filterContacts(e.target.value);
     } else {
-      contactContext.clearFilter();
+      clearFilter();
     }
   };
 
