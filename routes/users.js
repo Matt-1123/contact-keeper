@@ -15,7 +15,7 @@ router.post(
   "/",
   [
     check("name", "Name is required").not().isEmpty(),
-    check("email", "Please include a validate email").isEmail(),
+    check("email", "Please include a valid email").isEmail(),
     check(
       "password",
       "Please enter a password with six or more characters"
@@ -57,7 +57,7 @@ router.post(
         },
       };
 
-      // Generate a token by signing it
+      // Generate a token by signing it. Respond with the token in the response.
       jwt.sign(
         payload,
         config.get("jwtSecret"),
