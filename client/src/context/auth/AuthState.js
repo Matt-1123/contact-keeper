@@ -2,6 +2,7 @@ import React, { useReducer } from "react";
 import axios from "axios";
 import AuthContext from "./authContext";
 import authReducer from "./authReducer";
+import setAuthToken from "../../utils/setAuthToken";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -28,42 +29,39 @@ const AuthState = (props) => {
   // ACTIONS:
 
   // Load User
-  const loadUser = () => console.log("loaduser"); // todo: load token into global headers
+  const loadUser = async () => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
 
-  // Register User
-  // const register = async (formData) => {
-  //   const config = {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   };
+    try {
+      // check token to see if valid user
+      const res = await axios.get("/api/auth");
 
-  //   try {
-  //     // Note: the proxy host in package.json sends request to localhost:5000, so no need to enter it here.
-  //     const res = await axios.post("/api/users", formData, config);
+      dispatch({ type: USER_LOADED, payload: res.data });
+    } catch (err) {
+      dispatch({ type: AUTH_ERROR });
+    }
+  };
 
-  //     dispatch({
-  //       type: REGISTER_SUCCESS,
-  //       payload: res.data,
-  //     });
-  //   } catch (err) {
-  //     dispatch({
-  //       type: REGISTER_FAIL,
-  //       payload: err.response.data.msg,
-  //     });
-  //   }
-  // };
   // Register User
   const register = async (formData) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
     try {
-      const res = await axios.post("/api/users", formData);
+      // Note: the proxy host in package.json sends request to localhost:5000, so no need to enter it here.
+      const res = await axios.post("/api/users", formData, config);
 
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data,
       });
 
-      loadUser(dispatch);
+      loadUser();
     } catch (err) {
       dispatch({
         type: REGISTER_FAIL,
@@ -71,6 +69,25 @@ const AuthState = (props) => {
       });
     }
   };
+
+  // Register User
+  // const register = async (formData) => {
+  //   try {
+  //     const res = await axios.post("/api/users", formData);
+
+  //     dispatch({
+  //       type: REGISTER_SUCCESS,
+  //       payload: res.data,
+  //     });
+
+  //     loadUser(dispatch);
+  //   } catch (err) {
+  //     dispatch({
+  //       type: REGISTER_FAIL,
+  //       payload: err.response.data.msg,
+  //     });
+  //   }
+  // };
 
   // Login User
   const login = () => console.log("login");

@@ -11,6 +11,13 @@ import {
 
 export default (state, action) => {
   switch (action.type) {
+    case USER_LOADED:
+      return {
+        ...state,
+        isAuthenticated: true,
+        loading: false,
+        user: action.payload,
+      };
     case REGISTER_SUCCESS:
       // get token from action.payload and set it in localstorage
       localStorage.setItem("token", action.payload.token);
@@ -21,6 +28,7 @@ export default (state, action) => {
         loading: false,
       };
     case REGISTER_FAIL:
+    case AUTH_ERROR:
       // remove token from storage
       localStorage.removeItem("token");
       return {
