@@ -28,22 +28,42 @@ const AuthState = (props) => {
   // ACTIONS:
 
   // Load User
+  const loadUser = () => console.log("loaduser"); // todo: load token into global headers
 
   // Register User
-  const register = async (formData) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+  // const register = async (formData) => {
+  //   const config = {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   };
 
+  //   try {
+  //     // Note: the proxy host in package.json sends request to localhost:5000, so no need to enter it here.
+  //     const res = await axios.post("/api/users", formData, config);
+
+  //     dispatch({
+  //       type: REGISTER_SUCCESS,
+  //       payload: res.data,
+  //     });
+  //   } catch (err) {
+  //     dispatch({
+  //       type: REGISTER_FAIL,
+  //       payload: err.response.data.msg,
+  //     });
+  //   }
+  // };
+  // Register User
+  const register = async (formData) => {
     try {
-      const res = await axios.post("/api/users", formData, config);
+      const res = await axios.post("/api/users", formData);
 
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data,
       });
+
+      loadUser(dispatch);
     } catch (err) {
       dispatch({
         type: REGISTER_FAIL,
@@ -53,8 +73,10 @@ const AuthState = (props) => {
   };
 
   // Login User
+  const login = () => console.log("login");
 
   // Logout
+  const logout = () => console.log("logout");
 
   // Clear Errors
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
@@ -68,6 +90,9 @@ const AuthState = (props) => {
         user: state.user,
         errors: state.errors,
         register,
+        login,
+        logout,
+        clearErrors,
       }}
     >
       {props.children}
