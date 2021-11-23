@@ -45,6 +45,7 @@ const AuthState = (props) => {
   };
 
   // Register User
+  // Desc: add user to database, and return a token which the reducer will put in the browser's local storage
   const register = async (formData) => {
     const config = {
       headers: {
@@ -56,6 +57,7 @@ const AuthState = (props) => {
       // Note: the proxy host in package.json sends request to localhost:5000, so no need to enter it here.
       const res = await axios.post("/api/users", formData, config);
 
+      // send token to reducer
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data,
@@ -70,27 +72,32 @@ const AuthState = (props) => {
     }
   };
 
-  // Register User
-  // const register = async (formData) => {
-  //   try {
-  //     const res = await axios.post("/api/users", formData);
-
-  //     dispatch({
-  //       type: REGISTER_SUCCESS,
-  //       payload: res.data,
-  //     });
-
-  //     loadUser(dispatch);
-  //   } catch (err) {
-  //     dispatch({
-  //       type: REGISTER_FAIL,
-  //       payload: err.response.data.msg,
-  //     });
-  //   }
-  // };
-
   // Login User
-  const login = () => console.log("login");
+  const login = async (formData) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      // Note: the proxy host in package.json sends request to localhost:5000, so no need to enter it here.
+      const res = await axios.post("/api/auth", formData, config);
+
+      // send token to reducer
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data,
+      });
+
+      loadUser();
+    } catch (err) {
+      dispatch({
+        type: LOGIN_FAIL,
+        payload: err.response.data.msg,
+      });
+    }
+  };
 
   // Logout
   const logout = () => console.log("logout");
@@ -110,6 +117,7 @@ const AuthState = (props) => {
         login,
         logout,
         clearErrors,
+        loadUser,
       }}
     >
       {props.children}
