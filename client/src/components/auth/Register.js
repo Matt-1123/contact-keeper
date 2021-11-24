@@ -14,8 +14,6 @@ const Register = (props) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      // redirect to home page
-      console.log(props.history);
       navigate("/");
     }
 

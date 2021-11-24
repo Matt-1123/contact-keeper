@@ -7,7 +7,7 @@ const Home = () => {
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
-    // validate token and load user
+    // validate token and load user every time Home component loads
     authContext.loadUser();
     // eslint-disable-next-line
   }, []);

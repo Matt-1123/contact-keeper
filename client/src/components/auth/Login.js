@@ -3,7 +3,7 @@ import AlertContext from "../../context/alert/alertContext";
 import AuthContext from "../../context/auth/authContext";
 import { useNavigate } from "react-router-dom";
 
-const Login = (props) => {
+const Login = () => {
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
 
@@ -15,7 +15,6 @@ const Login = (props) => {
   useEffect(() => {
     if (isAuthenticated) {
       // redirect to home page
-      console.log(props.history);
       navigate("/");
     }
 
@@ -25,7 +24,7 @@ const Login = (props) => {
     }
     // get rid of errors about clearErrors and setAlert not being dependencies of useEffect. Adding these would cause an infinite loop
     // eslint-disable-next-line
-  }, [errors, isAuthenticated, props.history]);
+  }, [errors, isAuthenticated]);
 
   const [user, setUser] = useState({
     email: "",

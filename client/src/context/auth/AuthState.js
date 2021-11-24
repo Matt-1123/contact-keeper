@@ -31,15 +31,17 @@ const AuthState = (props) => {
   // Load User
   const loadUser = async () => {
     if (localStorage.token) {
+      console.log("there is a token in local storage");
       setAuthToken(localStorage.token);
     }
 
     try {
       // check token to see if valid user
       const res = await axios.get("/api/auth");
-
+      console.log(res);
       dispatch({ type: USER_LOADED, payload: res.data });
     } catch (err) {
+      console.log("load user error");
       dispatch({ type: AUTH_ERROR });
     }
   };
@@ -100,7 +102,7 @@ const AuthState = (props) => {
   };
 
   // Logout
-  const logout = () => console.log("logout");
+  const logout = () => dispatch({ type: LOGOUT });
 
   // Clear Errors
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
